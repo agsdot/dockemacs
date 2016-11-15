@@ -14,6 +14,7 @@
 (unless (version< emacs-version "24.4")
   (use-package magit :ensure t :defer t
     :config (setq magit-completing-read-function 'magit-ido-completing-read))
+  (use-package git-timemachine :ensure t :defer t)
   (use-package docker :defer t :ensure t :config (docker-global-mode)))
 
 ;; ============================== Jump =========================================
