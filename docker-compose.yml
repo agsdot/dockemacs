@@ -10,5 +10,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - development.env
+  nodejs:
+    build:
+      context: src/nodejs
 volumes:
   data:

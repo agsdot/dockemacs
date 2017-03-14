@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if ! id "${UNAME}" >/dev/null 2>&1; then
   echo "${UNAME}:x:${UID}:${GID}:${UNAME},,,:${HOME}:${SHELL}" >> /etc/passwd
