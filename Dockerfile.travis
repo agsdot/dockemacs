@@ -21,8 +21,7 @@ RUN apk update && \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-        bash sudo emacs-nox global git openssh-client gnupg nodejs-npm \
-        python curl && \
+        bash sudo emacs-nox global git openssh-client gnupg python curl && \
     apk add --no-cache --virtual cask-install-deps gnutls-utils && \
     git clone --depth 1 https://github.com/cask/cask.git "$CASK" && \
     apk del cask-install-deps && \
@@ -35,7 +34,6 @@ RUN apk update && \
 WORKDIR "${WORKSPACE}"
 ENTRYPOINT ["initialize"]
 CMD cd "$HOME/.emacs.d" && \
-    ln -s "$HOME/.emacs.d/.eslintrc.yml" "$HOME/.eslintrc.yml" && \
     ln -s "$WORKSPACE/.docker" "$HOME/.docker" && \
     ln -s "$WORKSPACE/.git" "$HOME/.git" && \
     ln -s "$WORKSPACE/.gitconfig" "$HOME/.gitconfig" && \
@@ -44,7 +42,6 @@ CMD cd "$HOME/.emacs.d" && \
     (git fetch origin master || true) && \
     git reset --hard origin/master && \
     (bundle check || bundle install --path "$HOME/.emacs.d/bundle" || true) && \
-    (npm install || true) && export PATH="$(npm bin):$PATH" && \
     export ORG_PATH="$WORKSPACE/$ORG_FILES" && \
     export PATH="$CASK_BIN:$PATH" && \
     env && cask install && cask exec buttercup -L . -L tests
