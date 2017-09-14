@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
 args=$(printf "%q\t" "$@")
-ssh "$HOST_USER@$HOST_IP" -p "$HOST_PORT" "$RUBY_COMMAND" "$args" >> /tmp/ruby.json
+ssh "$HOST_USER@$HOST_IP" -p "$HOST_PORT" -t \
+    "$RUBY_COMMAND" "$args" >> /tmp/ruby.json
 cat /tmp/ruby.json
