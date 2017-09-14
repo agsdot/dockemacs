@@ -50,6 +50,8 @@
   echo "DISPLAY=:0.0" >> $HOME/.dockemacs
   echo "WEB_BROWSER=chromium" >> $HOME/.dockemacs
   echo "REPOSITORY=git@github.com:AfsmNGhr/dockemacs.git" >> $HOME/.dockemacs
+  echo "NODE_COMMAND=node" >> $HOME/.dockemacs
+  echo "RUBY_COMMAND=ruby" >> $HOME/.dockemacs
   ```
 
     * `UID` and `GID` - transparent permissions
@@ -63,6 +65,8 @@
     * `DISPLAY` - for GUI application
     * `WEB_BROWSER` - setup browser for emacs
     * `REPOSITORY` - our repository dotemacs (first clone)
+    * `RUBY_COMMAND` - remote ruby executable
+    * `NODE_COMMAND` - remote node executable
 
 * Setup ssh daemon and restart
 
