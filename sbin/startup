@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-ln -s "$WORKSPACE/.docker" "$HOME/.docker"
 ln -s "$WORKSPACE/.git" "$HOME/.git"
 ln -s "$WORKSPACE/.gitconfig" "$HOME/.gitconfig"
 ln -s "$WORKSPACE/.ssh" "$HOME/.ssh"
@@ -13,7 +12,6 @@ fi
 cd "$HOME/.emacs.d"
 (git fetch origin master || true)
 git reset --hard origin/master
-(bundle check || bundle install --path "$HOME/.emacs.d/bundle" || true)
 export ORG_PATH="$WORKSPACE/$ORG_FILES"
 cd "$WORKSPACE"
 emacs

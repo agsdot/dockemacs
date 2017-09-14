@@ -1,3 +1,7 @@
+## 1.5.4
+
+* Delete ruby requirements
+
 ## 1.5.3
 
 * Delete `nodejs-npm`
