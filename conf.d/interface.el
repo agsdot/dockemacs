@@ -17,7 +17,6 @@
    ((t (:inherit ace-jump-face-foreground :height 3.0)))))
 
 (setq-default tab-width 2
-              indent-line-function 2
               indent-tabs-mode nil
               file-name-coding-system 'utf-8
               display-time-interval 1
@@ -34,6 +33,7 @@
                                                           comint-input-ring)
               dired-listing-switches "-lhvA"
               magit-push-always-verify nil
+              epa-pinentry-mode 'loopback
               word-wrap t
               search-highlight t
               use-dialog-box nil
@@ -43,9 +43,12 @@
               query-replace-highlight t
               x-select-enable-clipboard t
               echo-keystrokes 0.1
+              enable-local-eval t
+              enable-remote-dir-locals t
               browse-url-browser-function 'browse-url-generic
-              browse-url-generic-program "firefox-nightly"
+              browse-url-generic-program "/usr/local/sbin/browser-remote"
               tab-always-indent 'complete
+              garbage-collection-messages t
               electric-pair-pairs '((?\" . ?\")
                                     (?\` . ?\`)
                                     (?\( . ?\))

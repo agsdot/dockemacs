@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+ln -s "$WORKSPACE/.git" "$HOME/.git"
+ln -s "$WORKSPACE/.gitconfig" "$HOME/.gitconfig"
+ln -s "$WORKSPACE/.ssh" "$HOME/.ssh"
+ln -s "$WORKSPACE/.gnupg" "$HOME/.gnupg"
+
+if [ ! -d "$HOME/.emacs.d" ]; then
+  git clone "$REPOSITORY" "$HOME/.emacs.d"
+fi
+
+cd "$HOME/.emacs.d"
+(git fetch origin master || true)
+git reset --hard origin/master
+export ORG_PATH="$WORKSPACE/$ORG_FILES"
+cd "$WORKSPACE"
+emacs

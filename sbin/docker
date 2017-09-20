@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+cat /dev/null > /tmp/docker.json
+args=$(printf "%q\t" "$@")
+if [ "$args" != *"exec"* ]; then
+  ssh "$HOST_USER@$HOST_IP" -p "$HOST_PORT" docker "$args" >> /tmp/docker.json
+  cat /tmp/docker.json
+else
+  ssh "$HOST_USER@$HOST_IP" -p "$HOST_PORT" -t docker "$args"
+fi

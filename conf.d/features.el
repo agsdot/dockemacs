@@ -15,14 +15,44 @@
   (use-package magit :ensure t :defer t
     :config (setq magit-completing-read-function 'magit-ido-completing-read))
   (use-package git-timemachine :ensure t :defer t)
-  (use-package docker :defer t :ensure t :config (docker-global-mode)))
+  (use-package docker :defer t :ensure t))
 
 ;; ============================== Jump =========================================
 
 (use-package ace-window :ensure t :defer t
+  :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+                aw-background nil))
+(use-package bookmark
   :config
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-        aw-background nil))
+  (setq bookmark-save-flag t)
+  (global-set-key (kbd "C-x r b")
+                  (lambda ()
+                    (interactive)
+                    (bookmark-jump
+                     (ido-completing-read "jump to bookmark: "
+                                          (bookmark-all-names))))))
+
+(use-package recentf
+  :config
+  (setq recentf-max-saved-items 30
+        recentf-keep '(file-remote-p file-readable-p))
+
+  (defun ido-recentf-open ()
+    "Use `ido-completing-read' to find a recent file."
+    (interactive)
+    (find-file (ido-completing-read "Open recent file: " recentf-list nil t)))
+
+  (global-set-key (kbd "C-c f") 'ido-recentf-open))
+
+(use-package ag :ensure t :defer t)
+(use-package ggtags :ensure t :defer 30
+  :init (ggtags-mode 1)
+  :config
+  (setq-local eldoc-documentation-function #'ggtags-eldoc-function))
+
+(unless (version< emacs-version "25.1")
+  (use-package gxref :ensure t :defer t
+    :init (add-to-list 'xref-backend-functions 'gxref-xref-backend)))
 
 ;; ============================== Search =======================================
 
@@ -45,21 +75,9 @@
     (setq ido-enable-flex-matching t
           ido-use-faces t
           ido-virtual-buffers t
-          ido-auto-merge-delay-time 99999999
-          gc-cons-threshold 10000000))
-  (use-package ido-ubiquitous :ensure t
+          ido-auto-merge-delay-time 99999999))
+  (use-package ido-completing-read+ :ensure t :pin melpa-stable
     :config (ido-ubiquitous-mode 1)))
-
-;; ================================ Tags ======================================
-
-(use-package ggtags :ensure t :defer t
-  :init (ggtags-mode 1)
-  :config
-  (setq-local eldoc-documentation-function #'ggtags-eldoc-function))
-
-(unless (version< emacs-version "25.1")
-  (use-package gxref :ensure t :defer t
-    :init (add-to-list 'xref-backend-functions 'gxref-xref-backend)))
 
 ;; ============================= Company ======================================
 
@@ -96,28 +114,14 @@
 
 ;; ============================= Checkers ======================================
 
-(use-package flycheck :ensure t
-  :init (global-flycheck-mode))
+(use-package flycheck :ensure t :defer t)
 
 ;; ============================= Snippets ======================================
 
 (use-package yasnippet :ensure t :defer 30
+  :init (yas-global-mode t)
   :config
-  (yas-global-mode t)
-  (yas-load-directory (concat my/emacs-dir) "/snippets/angular")
   (setq yas-fallback-behavior 'indent-line))
-
-;; ============================= Bookmarks =====================================
-
-(use-package bookmark
-  :config
-  (setq bookmark-save-flag t)
-  (global-set-key (kbd "C-x r b")
-                  (lambda ()
-                    (interactive)
-                    (bookmark-jump
-                     (ido-completing-read "jump to bookmark: "
-                                          (bookmark-all-names))))))
 
 ;; ============================= Projectile ===================================
 
@@ -127,9 +131,8 @@
   :config
   (setq-default projectile-enable-caching t
                 projectile-use-git-grep t
-                projectile-indexing-method 'alien
+                projectile-indexing-method 'default
                 projectile-switch-project-action 'projectile-dired
-                projectile-file-exists-remote-cache-expire nil
                 projectile-file-exists-remote-cache-expire (* 10 60)
                 projectile-file-exists-local-cache-expire (* 5 60)
                 projectile-require-project-root nil
